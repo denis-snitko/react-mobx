@@ -1,14 +1,16 @@
 import { observer } from 'mobx-react-lite';
-import { counterStore } from './stores/counter';
-import { postsStore } from './stores/posts';
+import { useStores } from './contextProvider';
 
 const App = observer(() => {
-	const { count, decrement, increment } = counterStore;
-	const { posts, isLoading, getPostsAction } = postsStore;
+	const {
+		counterStore: { count, decrement, increment },
+		postsStore: { posts, isLoading, getPostsAction },
+	} = useStores();
 
 	return (
 		<div className="App">
 			<h3>Select the number of posts to get</h3>
+
 			<div>
 				<button
 					disabled={!count}
@@ -22,12 +24,17 @@ const App = observer(() => {
 					+
 				</button>
 			</div>
+
 			<br />
+
 			<button disabled={!count} onClick={() => getPostsAction(count)}>
 				Get posts
 			</button>
+
 			<hr />
+
 			<h3>Posts</h3>
+
 			{isLoading ? (
 				<div>Loading...</div>
 			) : (
@@ -39,6 +46,7 @@ const App = observer(() => {
 					))}
 				</ol>
 			)}
+
 			{posts.length === 0 && !isLoading && <p>No data</p>}
 		</div>
 	);
